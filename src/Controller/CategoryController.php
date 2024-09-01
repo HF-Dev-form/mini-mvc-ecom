@@ -22,7 +22,13 @@ class CategoryController extends AbstractController
 
     public function index(int $id): string
     {
-
+        if(!$_REQUEST['METHOD'] === 'GET') {
+            return $this->twig->render("Error/404.html.twig");
+        }
+        if(!is_int($id)) {
+            header("Location: Product/index.html.twig");
+            die();
+        }
         $data = $this->categoryManager->selectAllProductByCategoryId($id);
         $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
         $perPage = 8;
